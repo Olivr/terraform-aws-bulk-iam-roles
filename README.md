@@ -11,12 +11,15 @@ module "roles" {
       assumable_by_federated = ["arn:aws:iam::111111111111:saml-provider/my-saml"]
     }
     ViewOnlyRole = {
-      policies               = ["arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"]
+      policies               = [
+        "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess",
+        "arn:aws:iam::aws:policy/ReadOnlyAccess"
+      ]
       assumable_by_federated = ["arn:aws:iam::111111111111:saml-provider/my-saml"]
     }
     CrossAccountRole = {
-      policies           = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-      assumable_by_roles = [
+      policies               = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+      assumable_by_roles     = [
         "arn:aws:iam::111111111111:root",
         "arn:aws:iam::111111111111:role/AdministratorRole"]
     }
