@@ -7,22 +7,26 @@ module "roles" {
   source = "github.com/OlivrDotCom/terraform-aws-assumable-roles"
 
   roles = {
-    NoAccessRole = {
-      assumable_by_federated = ["arn:aws:iam::111111111111:saml-provider/my-saml"]
+
+    CrossAccountAdminRole = {
+      policies               = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+      assumable_by_roles     = [
+        "arn:aws:iam::111111111111:root",
+        "arn:aws:iam::111111111111:role/AdministratorRole"]
     }
-    ViewOnlyRole = {
+
+    ViewOnlyFederatedRole = {
       policies               = [
         "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess",
         "arn:aws:iam::aws:policy/ReadOnlyAccess"
       ]
       assumable_by_federated = ["arn:aws:iam::111111111111:saml-provider/my-saml"]
     }
-    CrossAccountRole = {
-      policies               = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-      assumable_by_roles     = [
-        "arn:aws:iam::111111111111:root",
-        "arn:aws:iam::111111111111:role/AdministratorRole"]
+
+    NoAccessRole = {
+      assumable_by_federated = ["arn:aws:iam::111111111111:saml-provider/my-saml"]
     }
+
   }
 }
 
