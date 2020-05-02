@@ -22,6 +22,14 @@ module "roles" {
     }
   }
 }
+
+output "roles_arn" {
+  value = module.roles.arn
+}
+
+output "noaccessrole_arn" {
+  value = module.roles.arn["NoAccessRole"]
+}
 ```
 
 ## Requirements
