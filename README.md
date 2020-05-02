@@ -60,6 +60,6 @@ output "noaccessrole_arn" {
 
 ## Outputs
 
-| Name | Description             |
-| ---- | ----------------------- |
-| arn  | ARNs of the input roles |
+| Name | Description                        |
+| ---- | ---------------------------------- |
+| arn  | ARNs for each of the created roles |
