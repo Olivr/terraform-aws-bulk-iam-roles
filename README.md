@@ -10,10 +10,10 @@ The `role` object can take the following properties:
 
 | Name                   | Description                                                     | Type           | Required |
 | ---------------------- | --------------------------------------------------------------- | -------------- | :------: |
-| policies               | List of policies to attach                                      | `list(string)` |   yes    |
-| assumable_by_roles     | List of roles who can assume this role                          | `list(string)` |   yes    |
-| assumable_by_federated | List of IAM identity providers whose users can assume this role | `list(string)` |   yes    |
-| assume_roles           | List of roles this role can assume                              | `list(string)` |   yes    |
+| policies               | List of policies to attach                                      | `list(string)` |    no    |
+| assumable_by_roles     | List of roles who can assume this role                          | `list(string)` |    no    |
+| assumable_by_federated | List of IAM identity providers whose users can assume this role | `list(string)` |    no    |
+| assume_roles           | List of roles this role can assume                              | `list(string)` |    no    |
 
 ### Example for a typical multi-account organization setup
 
