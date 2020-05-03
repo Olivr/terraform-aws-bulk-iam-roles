@@ -1,12 +1,3 @@
-locals {
-  // Create a list of role/policy association in the format [{role = "xx", policy = "yy"}] 
-  policy_roles = [
-    for role, prop in var.roles : [
-      for policy in prop["policies"] : merge({ role = role }, { policy = policy })
-    ] if length(lookup(prop, "policies", [])) > 0
-  ]
-}
-
 // Create Roles
 resource "aws_iam_role" "roles" {
   for_each = var.roles
@@ -67,10 +58,60 @@ resource "aws_iam_role" "roles" {
   EOF
 }
 
-// Attach policies to roles
-resource "aws_iam_role_policy_attachment" "roles_policies" {
-  for_each = zipmap([for k, v in flatten(local.policy_roles) : k], flatten(local.policy_roles))
+
+/**
+ * Attach assumable policies to roles
+ */
+
+locals {
+  // Create a list of role/policy association in the format [{role = "xx", policy = "yy"}] 
+  assumable_policy_roles = [
+    for role, prop in var.roles : [
+      for policy in prop["policies"] : merge({ role = role }, { policy = policy })
+    ] if length(lookup(prop, "policies", [])) > 0
+  ]
+}
+
+resource "aws_iam_role_policy_attachment" "assumable_policies" {
+  for_each = zipmap([for k, v in flatten(local.assumable_policy_roles) : k], flatten(local.assumable_policy_roles))
 
   role       = aws_iam_role.roles[each.value.role].name
   policy_arn = each.value.policy
+}
+
+
+/**
+ * Create role assuming policies
+ */
+
+locals {
+  // Create a map of roles => [] with roles to assume
+  assume_roles = {
+    for role, prop in var.roles :
+    role => prop["assume_roles"]
+    if length(lookup(prop, "assume_roles", [])) > 0
+  }
+}
+
+resource "aws_iam_role_policy" "assuming_policies" {
+  for_each = local.assume_roles
+
+  name = "AssumeRoles"
+  role = aws_iam_role.roles[each.key].name
+
+  policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": {
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Resource": [
+        %{for index, role in each.value}
+          "${role}"
+          %{if(index != length(each.value) - 1)},%{endif}
+        %{endfor}
+      ]
+    }
+  }
+  EOF
 }
