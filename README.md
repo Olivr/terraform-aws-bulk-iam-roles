@@ -15,11 +15,11 @@ The `role` object can take the following properties:
 | assumable_by_federated | List of IAM identity providers whose users can assume this role | `list(string)` |   yes    |
 | assume_roles           | List of roles this role can assume                              | `list(string)` |   yes    |
 
-### Example for a typical multi-account org setup
+### Example for a typical multi-account organization setup
 
-> You need to create the roles that can assume other roles first (aka the identity account roles)
+> You need to create the roles that can assume other roles first (aka the _identity_ account roles)
 
-In the `identity` account ID `111111111111`:
+In the _identity_ account `111111111111`:
 
 ```hcl
 module "roles" {
@@ -28,20 +28,20 @@ module "roles" {
   roles = {
     AdminRole = {
 
-      // Give administrator access to the identity account
+      // This role has administrator access to the identity account
       policies               = ["arn:aws:iam::aws:policy/AdministratorAccess"]
 
-      // If we are using a SAML identity provider
-      assumable_by_federated = ["arn:aws:iam::111111111111:saml-provider/my-saml"]
-
-      // Give administrator access to the dev and prod accounts
-      assume_roles           = ["arn:aws:iam::222222222222:role/DevAdminRole", "arn:aws:iam::333333333333:role/ProdAdminRole"]
+      // This role CAN BECOME admin in the dev and prod accounts
+      assume_roles           = [
+        "arn:aws:iam::222222222222:role/DevAdminRole",
+        "arn:aws:iam::333333333333:role/ProdAdminRole"
+      ]
     }
   }
 }
 ```
 
-In the `dev` account ID `222222222222`:
+In the _dev_ account `222222222222`:
 
 ```hcl
 module "roles" {
@@ -50,17 +50,17 @@ module "roles" {
   roles = {
     DevAdminRole = {
 
-      // Give administrator access to the dev account
+      // This role has administrator access to the dev account
       policies           = ["arn:aws:iam::aws:policy/AdministratorAccess"]
 
-      // The AdminRole we just created in the identity account can assume this role
+      // The AdminRole in the identity account is ALLOWED TO BECOME admin in the dev account
       assumable_by_roles = ["arn:aws:iam::111111111111:role/AdminRole"]
     }
   }
 }
 ```
 
-In the `prod` account ID `333333333333`:
+In the _prod_ account `333333333333`:
 
 ```hcl
 module "roles" {
@@ -68,14 +68,18 @@ module "roles" {
 
   roles = {
     ProdAdminRole = {
-      policies           = ["arn:aws:iam::aws:policy/AdministratorAccess"] // This gives administrator access to the dev account
-      assumable_by_roles = ["arn:aws:iam::111111111111:role/AdminRole"] // The admin role we just created in the identity account - it must be created first
+
+      // This role has administrator access to the prod account
+      policies           = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+
+      // The AdminRole in the identity account is ALLOWED TO BECOME admin in the prod account
+      assumable_by_roles = ["arn:aws:iam::111111111111:role/AdminRole"]
     }
   }
 }
 ```
 
-### All possible values
+### Complete example
 
 ```hcl
 module "roles" {
