@@ -65,15 +65,15 @@ resource "aws_iam_role" "roles" {
 
 locals {
   // Create a list of role/policy association in the format [{role = "xx", policy = "yy"}] 
-  assumable_policy_roles = [
+  assumable_policy_roles = flatten([
     for role, prop in var.roles : [
       for policy in prop["policies"] : merge({ role = role }, { policy = policy })
     ] if length(lookup(prop, "policies", [])) > 0
-  ]
+  ])
 }
 
 resource "aws_iam_role_policy_attachment" "assumable_policies" {
-  for_each = zipmap([for k, v in flatten(local.assumable_policy_roles) : k], flatten(local.assumable_policy_roles))
+  for_each = zipmap([for k, v in local.assumable_policy_roles : k], local.assumable_policy_roles)
 
   role       = aws_iam_role.roles[each.value.role].name
   policy_arn = each.value.policy
