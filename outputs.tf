@@ -6,5 +6,5 @@ output "roles" {
       arn  = role.arn
     }
   }
-  description = "Created roles in the format { name = { name, arn }}"
+  description = "Created roles in the format `{ name = { name, arn }}`"
 }

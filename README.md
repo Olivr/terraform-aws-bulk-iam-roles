@@ -140,6 +140,11 @@ output "noaccessrole_arn" {
 
 ## Outputs
 
-| Name | Description                        |
-| ---- | ---------------------------------- |
-| arn  | ARNs for each of the created roles |
+| Name  | Description                                           |
+| ----- | ----------------------------------------------------- |
+| roles | Created roles in the format `{ name = { name, arn }}` |
+
+## Similar modules
+
+- [terraform-aws-bulk-iam-groups](https://github.com/olivr-com/terraform-aws-bulk-iam-groups)
+- [terraform-aws-bulk-iam-users](https://github.com/olivr-com/terraform-aws-bulk-iam-users)
