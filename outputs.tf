@@ -1,4 +1,10 @@
-output "arn" {
-  value       = { for role in aws_iam_role.roles : role.name => role.arn }
-  description = "ARNs for each of the created roles"
+output "roles" {
+  value = {
+    for role in aws_iam_role.roles :
+    role.name => {
+      name = role.name
+      arn  = role.arn
+    }
+  }
+  description = "Created roles in the format { name = { name, arn }}"
 }
