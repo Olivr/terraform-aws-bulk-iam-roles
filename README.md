@@ -1,6 +1,6 @@
-# terraform-aws-assume-roles
+# terraform-aws-bulk-iam-roles
 
-Create AWS IAM roles that can assume and/or be assumed.
+Create many AWS IAM roles at once.
 
 ## Examples
 
@@ -23,7 +23,7 @@ In the _identity_ account `111111111111`:
 
 ```hcl
 module "roles" {
-  source = "github.com/OlivrDotCom/terraform-aws-assume-roles"
+  source = "github.com/OlivrDotCom/terraform-aws-bulk-iam-roles"
 
   roles = {
     AdminRole = {
@@ -45,7 +45,7 @@ In the _dev_ account `222222222222`:
 
 ```hcl
 module "roles" {
-  source = "github.com/OlivrDotCom/terraform-aws-assume-roles"
+  source = "github.com/OlivrDotCom/terraform-aws-bulk-iam-roles"
 
   roles = {
     DevAdminRole = {
@@ -64,7 +64,7 @@ In the _prod_ account `333333333333`:
 
 ```hcl
 module "roles" {
-  source = "github.com/OlivrDotCom/terraform-aws-assume-roles"
+  source = "github.com/OlivrDotCom/terraform-aws-bulk-iam-roles"
 
   roles = {
     ProdAdminRole = {
@@ -83,7 +83,7 @@ module "roles" {
 
 ```hcl
 module "roles" {
-  source = "github.com/OlivrDotCom/terraform-aws-assume-roles"
+  source = "github.com/OlivrDotCom/terraform-aws-bulk-iam-roles"
 
   roles = {
 
