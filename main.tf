@@ -2,7 +2,9 @@
 resource "aws_iam_role" "roles" {
   for_each = var.roles
 
-  name               = each.key
+  name = each.key
+  tags = var.tags
+
   assume_role_policy = <<-EOF
   {
     "Version": "2012-10-17",

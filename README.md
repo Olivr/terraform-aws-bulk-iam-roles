@@ -5,7 +5,6 @@ Create many AWS IAM roles at once.
 ## Examples
 
 Each property of the `roles` object is the name of the role and its value is a `role` object
-
 The `role` object can take the following properties:
 
 | Name                   | Description                                                     | Type           | Required |
@@ -107,6 +106,11 @@ module "roles" {
       assumable_by_federated = ["arn:aws:iam::111111111111:saml-provider/my-saml"]
     }
 
+  }
+
+  tags = {
+    Automation = "true"
+    Terraform  = "true"
   }
 }
 
