@@ -123,32 +123,40 @@ output "noaccessrole_arn" {
 }
 ```
 
-## Requirements
+<!-- auto-terraform-docs -->
 
-| Name      | Version    |
-| --------- | ---------- |
-| terraform | ~> 0.12.24 |
-| aws       | ~> 2.58    |
-
-## Providers
-
-| Name | Version |
-| ---- | ------- |
-| aws  | ~> 2.58 |
-
-## Inputs
-
-| Name  | Description     | Type                     | Default | Required |
-| ----- | --------------- | ------------------------ | ------- | :------: |
-| roles | Roles to create | `map(map(list(string)))` | n/a     |   yes    |
-
-## Outputs
-
-| Name  | Description                                           |
-| ----- | ----------------------------------------------------- |
-| roles | Created roles in the format `{ name = { name, arn }}` |
+<!-- auto-terraform-docs -->
 
 ## Similar modules
 
 - [terraform-aws-bulk-iam-groups](https://github.com/olivr-com/terraform-aws-bulk-iam-groups)
 - [terraform-aws-bulk-iam-users](https://github.com/olivr-com/terraform-aws-bulk-iam-users)
+
+<!-- auto-support -->
+
+## Support
+
+Create a new issue on this GitHub repository.
+
+<!-- auto-support -->
+<!-- auto-contribute -->
+
+## Contributing
+
+All contributions are welcome! Please see the [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+
+<!-- auto-contribute -->
+<!-- auto-license -->
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
+
+<!-- auto-license -->
+<!-- auto-about-org -->
+
+## About olivr
+
+[Olivr](https://olivr.com) is an AI co-founder for your startup.
+
+<!-- auto-about-org -->

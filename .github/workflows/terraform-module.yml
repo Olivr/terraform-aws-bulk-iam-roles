@@ -1,0 +1,36 @@
+name: 'Test Terraform Module'
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  terraform:
+    env:
+      AWS_DEFAULT_REGION: us-east-1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: hashicorp/setup-terraform@v1
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Use examples to test
+        run: for i in *.example.tfvars*; do mv -- "$i" "${i/.example.tfvars/.auto.tfvars}"; done
+
+      - name: Validate Terraform config
+        run: terraform validate
+
+      - name: Terraform security scan
+        uses: triat/terraform-security-scan@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform plan
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: terraform plan -no-color
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
