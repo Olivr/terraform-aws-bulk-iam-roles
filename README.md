@@ -124,6 +124,31 @@ output "noaccessrole_arn" {
 ```
 
 <!-- auto-terraform-docs -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | ~> 0.12.24 |
+| aws | ~> 2.58 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.58 |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| roles | Roles to create. See [\_var\_roles.example.tfvars.json](\_var\_roles.example.tfvars.json) | `map(map(list(string)))` | n/a | yes |
+| tags | Tags to add to all users | `map(string)` | `{}` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| roles | Created roles in the format `{ name = { name, arn }}` |
 
 <!-- auto-terraform-docs -->
 
@@ -147,7 +172,6 @@ All contributions are welcome! Please see the [docs/CONTRIBUTING.md](docs/CONTRI
 
 <!-- auto-contribute -->
 <!-- auto-license -->
-
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
